@@ -2,26 +2,19 @@ import React, { useState, useEffect } from 'react'
 import useSWR from 'swr'
 import Image from 'next/image'
 import styles from './user.module.css'
-import axios from 'axios'
 
-// const fetcher = (...args) => fetch(...args).then((res) => res.json())
+const fetcher = (...args) => fetch(...args).then((res) => res.json())
 export default function Home( {allPostsData} ) {
-  const [notes, setNotes] = useState([])
-  useEffect(() => {
-    console.log('effect')
-    axios
-      .get('https://randomuser.me/api/?results=1000')
-      .then(response => {
-        console.log('promise fulfilled')
-        setNotes(response.data.results)
-      })
-  }, [])
+  const { data, error } = useSWR('https://randomuser.me/api/?results=1000', fetcher)
+
+  if (error) return <div>Failed to load</div>
+  if (!data) return <div>Loading...</div>
 
   return (
     <div>
       <h1>User List</h1>
         <div className={styles.userlist}>
-         {notes.map((post) => (
+         {data.results.map((post) => (
            <div className={styles.users}>
            <Image
            src={post.picture.large} // Route of the image file
