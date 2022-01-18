@@ -22,6 +22,7 @@ export default function Home( {allPostsData} ) {
            width={144} // Desired size with correct aspect ratio
            alt="Your Name"
            /><br/>
+           <p>{post.name.first}<br/>{post.email}<br/>{post.cell}</p>
            </div>
          ))}
         </div>
